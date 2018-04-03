@@ -1,2 +1,2 @@
-# dotneCoretJWT
+# dotnetCoreJWT
 Sample JWT for Dotnet Core 
