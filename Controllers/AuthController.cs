@@ -10,6 +10,7 @@ using dotnetCoreJWT.Services;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using dotnetCoreJWT.Helpers;
 
 namespace dotnetCoreJWT.Controllers
 {
@@ -38,9 +39,7 @@ namespace dotnetCoreJWT.Controllers
 
             var user = await _userManager.FindByNameAsync(model.UserName);
 
-            if (user == null) return BadRequest("Ivalid User Name");
-
-            if (await _userManager.CheckPasswordAsync(user, model.Password))
+            if (user != null && (await _userManager.CheckPasswordAsync(user, model.Password)))
             {
 
                 var response = new
@@ -53,7 +52,8 @@ namespace dotnetCoreJWT.Controllers
                 return new OkObjectResult(jwt);
                 
             }
-            return BadRequest("Ivalid User Password");
+
+            return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
         }
     }
 }

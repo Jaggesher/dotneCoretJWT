@@ -7,6 +7,7 @@ using dotnetCoreJWT.Data;
 using dotnetCoreJWT.Models;
 using Microsoft.AspNetCore.Identity;
 using dotnetCoreJWT.ViewModels;
+using dotnetCoreJWT.Helpers;
 
 namespace dotnetCoreJWT.Controllers
 {
@@ -30,7 +31,9 @@ namespace dotnetCoreJWT.Controllers
 
             var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
             var result = await _userManager.CreateAsync(user,model.Password);
-            return new ObjectResult(result);
+            if(!result.Succeeded) return BadRequest(Errors.AddErrorsToModelState(result,ModelState));
+            
+            return new ObjectResult(result.Succeeded);
 
         }
         
