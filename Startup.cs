@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
+using dotnetCoreJWT.Services;
 
 namespace dotnetCoreJWT
 {
@@ -41,6 +42,8 @@ namespace dotnetCoreJWT
             services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+
+            services.AddSingleton<IJwtFactoryService,JwtFactoryService>();
 
             var jwtAppsettingsOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
 
