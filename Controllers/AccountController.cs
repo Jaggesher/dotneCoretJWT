@@ -11,7 +11,7 @@ using dotnetCoreJWT.Helpers;
 
 namespace dotnetCoreJWT.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     public class AccountController : Controller
     {
         private readonly ApplicationDbContext _appDbCOntex;
@@ -24,8 +24,8 @@ namespace dotnetCoreJWT.Controllers
             _userManager = userManager;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Register([FromBody] RegistrationViewModel model)
+        [HttpPost("Register")]
+        public async Task<IActionResult> Post([FromBody] RegistrationViewModel model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -33,7 +33,7 @@ namespace dotnetCoreJWT.Controllers
             var result = await _userManager.CreateAsync(user,model.Password);
             if(!result.Succeeded) return BadRequest(Errors.AddErrorsToModelState(result,ModelState));
             
-            return new ObjectResult(result.Succeeded);
+            return new ObjectResult("Account created");
 
         }
         
