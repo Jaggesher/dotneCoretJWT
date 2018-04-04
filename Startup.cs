@@ -78,6 +78,10 @@ namespace dotnetCoreJWT
                     configureOptions.SaveToken = true;
                 });
 
+            services.AddAuthorization(Options =>
+                {
+                    Options.AddPolicy("ApiUser", policy => policy.RequireClaim("rol","ApiAccess"));
+                });
             services.AddMvc();
         }
 
