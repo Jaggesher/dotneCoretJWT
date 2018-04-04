@@ -10,13 +10,13 @@ using dotnetCoreJWT.ViewModels;
 
 namespace dotnetCoreJWT.Controllers
 {
-    [Route("api/[Controller]/[action]")]
-    public class AccoutController : Controller
+    [Route("api/[controller]/[action]")]
+    public class AccountController : Controller
     {
         private readonly ApplicationDbContext _appDbCOntex;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccoutController(ApplicationDbContext applicationDb,
+        public AccountController(ApplicationDbContext applicationDb,
          UserManager<ApplicationUser> userManager)
         {
             _appDbCOntex = applicationDb;
@@ -33,8 +33,6 @@ namespace dotnetCoreJWT.Controllers
             return new ObjectResult(result);
 
         }
-
-
-
+        
     }
 }
