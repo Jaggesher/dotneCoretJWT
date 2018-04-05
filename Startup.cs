@@ -21,10 +21,6 @@ namespace dotnetCoreJWT
 {
     public class Startup
     {
-        private const String SecretKey = "This Is Super Secret Key";
-        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
-
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -44,8 +40,11 @@ namespace dotnetCoreJWT
             .AddDefaultTokenProviders();
 
             services.AddSingleton<IJwtFactoryService,JwtFactoryService>();
+           
 
             var jwtAppsettingsOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+
+            SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtAppsettingsOptions["SecreatKey"]));
 
             services.Configure<JwtIssuerOptions>(Options =>
                 {
@@ -53,7 +52,9 @@ namespace dotnetCoreJWT
                     Options.Audience = jwtAppsettingsOptions[nameof(JwtIssuerOptions.Audience)];
                     Options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
                 });
-
+            
+            
+        
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -85,6 +86,7 @@ namespace dotnetCoreJWT
                 {
                     Options.AddPolicy("ApiUser", policy => policy.RequireClaim("rol","ApiAccess"));
                 });
+
             services.AddMvc();
         }
 
