@@ -33,7 +33,7 @@ namespace dotnetCoreJWT.Controllers
             var result = await _userManager.CreateAsync(user,model.Password);
             if(!result.Succeeded) return BadRequest(Errors.AddErrorsToModelState(result,ModelState));
             
-            return new ObjectResult("Account created");
+            return new ObjectResult( new { Message = "Account Created" });
 
         }
         
