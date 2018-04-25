@@ -24,7 +24,7 @@ namespace dotnetCoreJWT.Services
                 new Claim(JwtRegisteredClaimNames.Jti, await _jwtIssuerOption.JtiGenerator()),
                 new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtIssuerOption.IssuedAt).ToString(), ClaimValueTypes.Integer64),
                 new Claim("id",id),
-                new Claim("rol","ApiAccess")
+                new Claim("rol","user")
             };
 
             var jwt = new JwtSecurityToken(

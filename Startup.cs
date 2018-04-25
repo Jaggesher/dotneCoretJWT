@@ -84,7 +84,8 @@ namespace dotnetCoreJWT
 
             services.AddAuthorization(Options =>
                 {
-                    Options.AddPolicy("ApiUser", policy => policy.RequireClaim("rol","ApiAccess"));
+                    Options.AddPolicy("ApiUser", policy => policy.RequireClaim("rol","user"));
+                    Options.AddPolicy("SiteAdmin", policy => policy.RequireClaim("rol","admin"));
                 });
 
             services.AddMvc();
