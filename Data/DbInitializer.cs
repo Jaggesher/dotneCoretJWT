@@ -8,28 +8,61 @@ namespace dotnetCoreJWT.Data
 {
     public class DbInitializer
     {
-        public async static void Initialize(ApplicationDbContext _context,
-            UserManager<ApplicationUser> _userManage, RoleManager<IdentityRole> _roleManager
-            , ILogger<DbInitializer> _logger)
+        public async static void Initialize(ApplicationDbContext _context, UserManager<ApplicationUser> _userManage, RoleManager<IdentityRole> _roleManager, ILogger<DbInitializer> _logger)
         {
-            if (await _context.Users.AnyAsync())
-            {
-                return;
-            }
-            _logger.LogInformation("Create the role admin and user for application");
 
-            var rl_1 = await _roleManager.CreateAsync(new IdentityRole { Name = "admin" });
-            var rl_2 = await _roleManager.CreateAsync(new IdentityRole { Name = "user" });
+            _logger.LogInformation("Creating Roles For Application");
 
-            if (rl_1.Succeeded && rl_2.Succeeded)
+            if (await _roleManager.RoleExistsAsync("admin"))
             {
-                _logger.LogDebug("Created the roles successfully");
-            }
-            else
-            {
-                _logger.LogDebug("Can't Create the roles");
+                await _roleManager.CreateAsync(new IdentityRole { Name = "admin" });
             }
 
+            if (await _roleManager.RoleExistsAsync("simpleUser"))
+            {
+                await _roleManager.CreateAsync(new IdentityRole { Name = "simpleUser" });
+            }
+
+            if (await _roleManager.RoleExistsAsync("valueableUser"))
+            {
+                await _roleManager.CreateAsync(new IdentityRole { Name = "valueableUser" });
+            }
+
+            _logger.LogInformation("All Logs Are OK");
+
+            _logger.LogInformation("Now Seeding Users");
+
+            if (await _userManage.FindByNameAsync("admin") == null)
+            {
+                var user = new ApplicationUser { Email = "admin@gmail.com", UserName = "admin" };
+                string password = "123456=jk";
+                await _userManage.CreateAsync(user, password);
+
+                await _userManage.AddToRoleAsync(user,"admin");
+
+            }
+            
+
+            if (await _userManage.FindByNameAsync("SimpleUser") == null)
+            {
+                var user = new ApplicationUser { Email = "simpleuser@gmail.com", UserName = "SimpleUser" };
+                string password = "123456=jk";
+                await _userManage.CreateAsync(user, password);
+
+                await _userManage.AddToRoleAsync(user,"simpleUser");
+
+            }
+
+            if( await _userManage.FindByNameAsync("ValueableUser") == null)
+            {
+                var user = new ApplicationUser { Email = "valueableuser@gmail.com", UserName = "ValueableUser" };
+                string password = "123456=jk";
+                await _userManage.CreateAsync(user, password);
+
+                await _userManage.AddToRoleAsync(user,"ValueableUser");
+            }
+
+            _logger.LogInformation("All users Seems OK");
 
         }
     }

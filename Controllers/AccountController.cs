@@ -30,12 +30,12 @@ namespace dotnetCoreJWT.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
-            var result = await _userManager.CreateAsync(user,model.Password);
-            if(!result.Succeeded) return BadRequest(Errors.AddErrorsToModelState(result,ModelState));
-            
-            return new ObjectResult( new { Message = "Account Created" });
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded) return BadRequest(Errors.AddErrorsToModelState(result, ModelState));
+
+            return new ObjectResult(new { Message = "Account Created" });
 
         }
-        
+
     }
 }
