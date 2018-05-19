@@ -39,8 +39,8 @@ namespace dotnetCoreJWT
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-            services.AddSingleton<IJwtFactoryService,JwtFactoryService>();
-           
+            services.AddSingleton<IJwtFactoryService, JwtFactoryService>();
+
 
             var jwtAppsettingsOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
 
@@ -52,9 +52,9 @@ namespace dotnetCoreJWT
                     Options.Audience = jwtAppsettingsOptions[nameof(JwtIssuerOptions.Audience)];
                     Options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
                 });
-            
-            
-        
+
+
+
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -84,8 +84,9 @@ namespace dotnetCoreJWT
 
             services.AddAuthorization(Options =>
                 {
-                    Options.AddPolicy("ApiUser", policy => policy.RequireClaim("rol","user"));
-                    Options.AddPolicy("SiteAdmin", policy => policy.RequireClaim("rol","admin"));
+                    Options.AddPolicy("ApiUserSimple", policy => policy.RequireClaim("rol", "simpleUser"));
+                    Options.AddPolicy("APiUserValueable", policy => policy.RequireClaim("rol", "valueableUser"));
+                    Options.AddPolicy("SiteAdmin", policy => policy.RequireClaim("rol", "admin"));
                 });
 
             services.AddMvc();
