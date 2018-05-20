@@ -7,16 +7,32 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetCoreJWT.Controllers
 {
-    [Authorize(Policy = "ApiUser")]
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
         // GET api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("Admin")]
+        [Authorize(Policy = "SiteAdmin")]
+        public IEnumerable<string> Admin()
         {
             return new string[] { "value1", "value2" };
         }
+
+        [HttpGet("SimpleUser")]
+        [Authorize(Policy = "ApiUserSimple")]
+        public IEnumerable<String> SimpleUser()
+        {
+            return new string[] { "value3", "value4" };
+        }
+
+
+        [HttpGet("ValueableUser")]
+        [Authorize(Policy = "APiUserValueable")]
+        public IEnumerable<String> ValueableUser()
+        {
+            return new string[] { "value5", "value6" };
+        }
+
 
         // GET api/values/5
         [HttpGet("{id}")]

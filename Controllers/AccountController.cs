@@ -31,7 +31,11 @@ namespace dotnetCoreJWT.Controllers
 
             var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded) return BadRequest(Errors.AddErrorsToModelState(result, ModelState));
+            if (!result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "simpleUser");
+                return BadRequest(Errors.AddErrorsToModelState(result, ModelState));
+            }
 
             return new ObjectResult(new { Message = "Account Created" });
 

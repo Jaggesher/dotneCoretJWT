@@ -41,16 +41,17 @@ namespace dotnetCoreJWT.Controllers
 
             if (user != null && (await _userManager.CheckPasswordAsync(user, model.Password)))
             {
+                var roles = await _userManager.GetRolesAsync(user);
 
                 var response = new
-                    {
-                        id = user.Id,
-                        auth_token = await _jwtFactory.GenerateToken(user.UserName, user.Id)
-                    };
+                {
+                    id = user.Id,
+                    auth_token = await _jwtFactory.GenerateToken(user.UserName, user.Id, roles)
+                };
 
                 var jwt = JsonConvert.SerializeObject(response);
                 return new OkObjectResult(jwt);
-                
+
             }
 
             return BadRequest(Errors.AddErrorToModelState("login_failure", "Invalid username or password.", ModelState));
